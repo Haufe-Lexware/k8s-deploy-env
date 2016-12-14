@@ -1,0 +1,7 @@
+FROM haufelexware/k8s-deploy-env:latest
+
+COPY . /root/deploy
+WORKDIR /root/deploy
+
+ENTRYPOINT ["/root/deploy/deploy-kubernetes.sh"]
+CMD ["", ""]
