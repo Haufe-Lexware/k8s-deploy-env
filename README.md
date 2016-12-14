@@ -3,7 +3,7 @@
 This is a simple base image which contains:
 
 * NodeJS 6 (currently 6.9.2) and corresponding tooling (`npm`)
-* `kubectl` 1.4.9 for interaction with Kubernetes Clusters
+* Latest stable `kubectl` (currently 1.4.6 or possibly 1.5.0) for interaction with Kubernetes Clusters
 * the `nano` text editor
 
 This base image is available from the Docker Hub as `haufelexware/k8s-deploy-env:latest`.
