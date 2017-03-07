@@ -2,11 +2,13 @@
 
 This is a simple base image which contains:
 
-* NodeJS 6 (currently 6.9.2) and corresponding tooling (`npm`)
-* Latest stable `kubectl` (currently 1.4.6 or possibly 1.5.0) for interaction with Kubernetes Clusters
-* the `nano` text editor
+* NodeJS 6 (currently 6.7.0) and corresponding tooling (`npm`)
+* Latest stable `kubectl` (currently 1.5.3) for interaction with Kubernetes Clusters
+* Latest `az` (Azure Command Line 2.0)
 
-This base image is available from the Docker Hub as `haufelexware/k8s-deploy-env:latest`.
+This image is available from the Docker Hub as `haufelexware/k8s-deploy-env:latest`.
+
+This image is based on `azuresdk/azure-cli-python`, so it aims on being current on the Azure tooling rather than on the node.js tooling.
 
 # Usage
 
