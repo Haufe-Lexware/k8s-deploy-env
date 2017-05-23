@@ -1,0 +1,20 @@
+FROM debian:jessie-slim
+
+RUN apt-get update && \
+    apt-get install -y curl wget perl bash python python-pip python-dev build-essential libffi-dev libssl-dev ssh apt-transport-https && \
+    echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | \
+    tee /etc/apt/sources.list.d/azure-cli.list
+RUN apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893 && \
+    apt-get update && apt-get install -y azure-cli && \
+    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
+    chmod +x ./kubectl && mv ./kubectl /usr/local/bin/kubectl && \
+    curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN apt-get install -y nodejs && \
+    export PIP_NO_CACHE_DIR=off && \
+    pip install --upgrade pip && \
+    pip install --upgrade cffi && \
+    pip install ansible && \
+    ansible-galaxy install geerlingguy.nfs && \
+    apt-get clean
+
+CMD ["/bin/true"]

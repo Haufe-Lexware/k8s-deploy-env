@@ -1,14 +1,30 @@
 # k8s-deploy-env
 
-This is a simple base image which contains:
+This is a base image which contains:
 
-* NodeJS 6 (currently 6.7.0) and corresponding tooling (`npm`)
-* Latest stable `kubectl` (currently 1.5.3) for interaction with Kubernetes Clusters
+* NodeJS 6 (the current version) and corresponding tooling (`npm`)
+* Latest stable `kubectl` for interaction with Kubernetes Clusters
 * Latest `az` (Azure Command Line 2.0)
 
-This image is available from the Docker Hub as `haufelexware/k8s-deploy-env:latest`.
+You can build two flavors: Alpine ([`Dockerfile`](Dockerfile)) or Debian/Jessie ([`Dockerfile-debian`](Dockerfile-debian)), depending on which type of additional software you need inside derived images. In case you don't need additional software, or just Alpine based utilities, pick the Alpine image (default). If you need other software which needs a glibc/libpthreads based image, use `Dockerfile-debian`. The latter is slightly larger.
 
-This image is based on `azuresdk/azure-cli-python`, so it aims on being current on the Azure tooling rather than on the node.js tooling.
+The Alpine image is available from the Docker Hub as `haufelexware/k8s-deploy-env:latest`; it's built once a week.
+
+If you want to build your own (recommended!):
+
+```bash
+$ docker build --pull -t registry.yourcompany.io/project/k8s-deploy-env:latest .
+...
+$ docker push registry.yourcompany.io/project/k8s-deploy-env:latest
+```
+
+For the Debian image:
+
+```bash
+$ docker build --pull -f Dockerfile-debian -t registry.yourcompany.io/project/k8s-deploy-env:latest-debian .
+...
+$ docker push registry.yourcompany.io/project/k8s-deploy-env:latest-debian
+```
 
 # Usage
 
@@ -52,3 +68,14 @@ $ docker run -it --rm yourtag <environment> <docker-tag>
 ```
 
 If you need to pass in environment variables, either do that using the `-e` or `--env-file` parameter of the `docker run` command. These will then be available in the `deploy-kubernetes.sh` command.
+
+## Using with volumes
+
+In case you are not running your deployment image inside Jenkins using Docker-in-Docker (which is a standard way of using Docker with Jenkins nowadays), you may also just mount your scripts inside the container using docker volumes (`-v`) and override the command from the command line.
+
+```
+$ docker run -v `pwd`:/root/deploy registry.yourcompany.io/project/k8s-deploy-env:latest /root/deploy/deploy-kubernetes.sh
+...
+```
+
+The previous version with deriving from the base image will always work though, also from inside Docker-in-Docker environments.
